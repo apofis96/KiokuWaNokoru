@@ -1,16 +1,29 @@
 ﻿using KiokuWaNokoru.BLL.Interfaces;
 using KiokuWaNokoru.Common.DTO.Reminder;
+using KiokuWaNokoru.DAL.Context;
+using KiokuWaNokoru.DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace KiokuWaNokoru.BLL.Services
 {
-    public class ReminderService : IReminderService
+    public class ReminderService(KiokuWaNokoruContext context) : IReminderService
     {
-        public Task<IEnumerable<ReminderDto>> GetAllAsync()
+        private readonly KiokuWaNokoruContext _context = context;
+
+        public async Task<IEnumerable<ReminderDto>> GetAllAsync()
         {
-            return Task.FromResult(Enumerable.Range(1, 5).Select(index => new ReminderDto
+            return await _context.Reminders.Select(r => new ReminderDto
             {
-                Id = Guid.NewGuid(),
-            }));
+                Id = r.Id
+            }).ToListAsync();
+        }
+
+        public async Task CreateTest()
+        {
+            Reminder reminder = new() { };
+
+            _context.Reminders.Add(reminder);
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -22,4 +22,11 @@ public class RemindController : ControllerBase
     {
         return Ok(await _reminderService.GetAllAsync());
     }
+
+    [HttpPost]
+    public async Task<ActionResult> Post()
+    {
+        await _reminderService.CreateTest();
+        return Ok();
+    }
 }
