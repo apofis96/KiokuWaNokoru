@@ -2,6 +2,8 @@ using Scalar.AspNetCore;
 using KiokuWaNokoru.WebAPI.Extensions;
 using DotNetEnv.Configuration;
 using DotNetEnv;
+using System.Reflection;
+using KiokuWaNokoru.BLL.MappingProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,11 @@ builder.Services.AddCustomDbContext(builder.Configuration);
 builder.Services.AddCustomServices();
 
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(automapper =>
+{
+    automapper.AddMaps(Assembly.GetAssembly(typeof(ReminderProfile)));
+});
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
