@@ -1,40 +1,57 @@
-import { Button, Fieldset, Input, Stack, Field, NativeSelectField, NativeSelectRoot } from '@chakra-ui/react';
+import { CreateReminder } from '@/common/types/types';
+import { Field } from '@/components/ui/field';
+import { Fieldset, Input } from '@chakra-ui/react';
+import { useImperativeHandle, forwardRef } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { FormRef } from '@/common/interfaces/form-ref.interface';
+import { titleValidation } from '@/common/validation-rules/validation-rules';
 
-const CreateReminderForm = () => {
-  const selectItems = ['United Kingdom (UK)', 'Canada (CA)', 'United States (US)'];
-  const selectOptions = selectItems.map(item => <option key={item}>{item}</option>);
+const CreateReminderForm = forwardRef<FormRef>((_, ref) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CreateReminder>({
+    defaultValues: {
+      title: '',
+      description: '',
+    },
+  });
+
+  useImperativeHandle(ref, () => ({
+    submit() {
+      handleSubmit(onSubmit)();
+    },
+  }));
+
+  const onSubmit: SubmitHandler<CreateReminder> = data => {
+    console.log(data);
+  };
 
   return (
     <Fieldset.Root size='lg' maxW='md'>
-      <Stack>
-        <Fieldset.Legend>Contact details</Fieldset.Legend>
-        <Fieldset.HelperText>Please provide your contact details below.</Fieldset.HelperText>
-      </Stack>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Fieldset.Content>
+          <Controller
+            control={control}
+            name='title'
+            rules={titleValidation}
+            render={({ field }) => (
+              <Field label='Name' invalid={!!errors.title} errorText={errors.title?.message}>
+                <Input {...field} />
+              </Field>
+            )}
+          />
+        </Fieldset.Content>
 
-      <Fieldset.Content>
-        <Field.Root>
-          <Field.Label>Name</Field.Label>
-          <Input name='name' />
-        </Field.Root>
-
-        <Field.Root>
-          <Field.Label>Email address</Field.Label>
-          <Input name='email' type='email' />
-        </Field.Root>
-
-        <Field.Root>
-          <Field.Label>Country</Field.Label>
-          <NativeSelectRoot>
-            <NativeSelectField name='country'>{selectOptions}</NativeSelectField>
-          </NativeSelectRoot>
-        </Field.Root>
-      </Fieldset.Content>
-
-      <Button type='submit' alignSelf='flex-start'>
-        Submit
-      </Button>
+        <Fieldset.Content>
+          <Field label='Description'>
+            <Controller control={control} name='description' render={({ field }) => <Input {...field} />} />
+          </Field>
+        </Fieldset.Content>
+      </form>
     </Fieldset.Root>
   );
-};
+});
 
 export { CreateReminderForm };
