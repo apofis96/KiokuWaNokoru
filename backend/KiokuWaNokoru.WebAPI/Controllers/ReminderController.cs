@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace KiokuWaNokoru.WebAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class RemindController(ILogger<RemindController> logger, IReminderService reminderService) : ControllerBase
+[Route("api/[controller]")]
+public class ReminderController(ILogger<ReminderController> logger, IReminderService reminderService) : ControllerBase
 {
-    private readonly ILogger<RemindController> _logger = logger;
+    private readonly ILogger<ReminderController> _logger = logger;
     private readonly IReminderService _reminderService = reminderService;
 
     [HttpGet]
