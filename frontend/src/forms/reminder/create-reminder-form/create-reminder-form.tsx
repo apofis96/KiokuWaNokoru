@@ -5,6 +5,10 @@ import { useImperativeHandle, forwardRef } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { FormRef } from '@/common/interfaces/form-ref.interface';
 import { titleValidation } from '@/common/validation-rules/validation-rules';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { reminderApi } from '@/api/api';
+import { useDrawerStore } from '@/stores/drawer.store';
+import { QueryKey } from '@/common/enums/enums';
 
 const CreateReminderForm = forwardRef<FormRef>((_, ref) => {
   const {
@@ -24,8 +28,22 @@ const CreateReminderForm = forwardRef<FormRef>((_, ref) => {
     },
   }));
 
+  const { toggleCreateReminderOpen } = useDrawerStore();
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (newReminder: CreateReminder) => reminderApi.createReminder(newReminder),
+    onSuccess: () => {
+      toggleCreateReminderOpen();
+      queryClient.invalidateQueries({
+        queryKey: [QueryKey.Reminders],
+      });
+    },
+  });
+
   const onSubmit: SubmitHandler<CreateReminder> = data => {
-    console.log(data);
+    mutation.mutate(data);
   };
 
   return (
