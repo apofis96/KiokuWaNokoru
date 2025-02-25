@@ -1,15 +1,12 @@
 import { Button } from '@chakra-ui/react';
-import { useNavigate } from 'react-router';
-
-import './dashboard-page.scss';
 import { CreateReminderDrawer } from './components/create-reminder-drawer/create-reminder-drawer';
 import { useDrawerStore } from '@/stores/drawer.store';
 import { useQuery } from '@tanstack/react-query';
 import { QueryKey } from '@/common/enums/enums';
 import { reminderApi } from '@/api/api';
+import './dashboard-page.scss';
 
 const DashboardPage = () => {
-  const navigate = useNavigate();
   const { toggleCreateReminderOpen } = useDrawerStore();
 
   const reminders = useQuery({
@@ -20,7 +17,6 @@ const DashboardPage = () => {
   return (
     <>
       <div className='dashboard-page'>
-        <Button onClick={() => navigate('/integrations')}>GoTo integrations</Button>
         <Button onClick={toggleCreateReminderOpen}>Test</Button>
         <CreateReminderDrawer />
       </div>
