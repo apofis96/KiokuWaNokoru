@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KiokuWaNokoru.BLL\KiokuWaNokoru.BLL.csproj" />
+    <ProjectReference Include="..\KiokuWaNokoru.Bot\KiokuWaNokoru.Bot.csproj" />
     <ProjectReference Include="..\KiokuWaNokoru.Common\KiokuWaNokoru.Common.csproj" />
   </ItemGroup>
 

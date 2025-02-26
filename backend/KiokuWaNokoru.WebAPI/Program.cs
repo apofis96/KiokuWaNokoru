@@ -4,6 +4,7 @@ using DotNetEnv.Configuration;
 using DotNetEnv;
 using System.Reflection;
 using KiokuWaNokoru.BLL.MappingProfiles;
+using KiokuWaNokoru.Bot.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Configuration
 // Add services to the container.
 builder.Services.AddCustomDbContext(builder.Configuration);
 builder.Services.AddCustomServices();
+builder.Services.AddTelegram(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(automapper =>

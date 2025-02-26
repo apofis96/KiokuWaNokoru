@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35806.99
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiokuWaNokoru.WebAPI", ".\KiokuWaNokoru.WebAPI\KiokuWaNokoru.WebAPI.csproj", "{F46EC3A4-6F32-45F8-B592-7C91530D88BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiokuWaNokoru.WebAPI", "KiokuWaNokoru.WebAPI\KiokuWaNokoru.WebAPI.csproj", "{F46EC3A4-6F32-45F8-B592-7C91530D88BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiokuWaNokoru.BLL", ".\KiokuWaNokoru.BLL\KiokuWaNokoru.BLL.csproj", "{BEED94FD-0062-4ABD-A500-0AEAF53437CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiokuWaNokoru.BLL", "KiokuWaNokoru.BLL\KiokuWaNokoru.BLL.csproj", "{BEED94FD-0062-4ABD-A500-0AEAF53437CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiokuWaNokoru.DAL", ".\KiokuWaNokoru.DAL\KiokuWaNokoru.DAL.csproj", "{BF3C785A-2226-4052-94E7-5026BA80DDBA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiokuWaNokoru.DAL", "KiokuWaNokoru.DAL\KiokuWaNokoru.DAL.csproj", "{BF3C785A-2226-4052-94E7-5026BA80DDBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiokuWaNokoru.Common", ".\KiokuWaNokoru.Common\KiokuWaNokoru.Common.csproj", "{153DB10A-C319-455D-A6BB-AAB7B8B95057}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiokuWaNokoru.Common", "KiokuWaNokoru.Common\KiokuWaNokoru.Common.csproj", "{153DB10A-C319-455D-A6BB-AAB7B8B95057}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KiokuWaNokoru.Bot", "KiokuWaNokoru.Bot\KiokuWaNokoru.Bot.csproj", "{4E5C7C46-7579-4100-8B90-7CEDF307F905}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{153DB10A-C319-455D-A6BB-AAB7B8B95057}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{153DB10A-C319-455D-A6BB-AAB7B8B95057}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{153DB10A-C319-455D-A6BB-AAB7B8B95057}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E5C7C46-7579-4100-8B90-7CEDF307F905}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E5C7C46-7579-4100-8B90-7CEDF307F905}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E5C7C46-7579-4100-8B90-7CEDF307F905}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E5C7C46-7579-4100-8B90-7CEDF307F905}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

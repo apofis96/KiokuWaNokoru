@@ -1,5 +1,7 @@
 ﻿using KiokuWaNokoru.BLL.Interfaces;
 using KiokuWaNokoru.BLL.Services;
+using KiokuWaNokoru.Bot.Interfaces;
+using KiokuWaNokoru.Bot.Services;
 using KiokuWaNokoru.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +12,7 @@ namespace KiokuWaNokoru.WebAPI.Extensions
         public static void AddCustomServices(this IServiceCollection services)
         {
             services.AddTransient<IReminderService, ReminderService>();
+            services.AddTransient<IBotService, BotService>();
         }
 
         public static void AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
@@ -18,6 +21,15 @@ namespace KiokuWaNokoru.WebAPI.Extensions
 
             services.AddDbContext<KiokuWaNokoruContext>(options =>
                 options.UseNpgsql(connectionsString));
+        }
+
+        public static void AddTelegram(this IServiceCollection services, IConfiguration configuration)
+        {
+            var botToken = configuration["TelegramBotToken"];
+            services.AddSingleton<ITelegramCoreService>(_ => new TelegramCoreService(botToken));
+
+            services.AddHostedService<TelegramBackgroundService>();
+
         }
     }
 }
