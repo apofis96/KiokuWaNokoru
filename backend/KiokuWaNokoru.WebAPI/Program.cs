@@ -4,7 +4,6 @@ using DotNetEnv.Configuration;
 using DotNetEnv;
 using System.Reflection;
 using KiokuWaNokoru.BLL.MappingProfiles;
-using KiokuWaNokoru.Bot.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +18,7 @@ builder.Configuration
 builder.Services.AddCustomDbContext(builder.Configuration);
 builder.Services.AddCustomServices();
 builder.Services.AddTelegram(builder.Configuration);
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(automapper =>
@@ -27,7 +27,11 @@ builder.Services.AddAutoMapper(automapper =>
 });
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+    options.AddOperationTransformer<OperationSecurityRequirementTransformer>();
+});
 
 var app = builder.Build();
 
@@ -35,11 +39,18 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.MapScalarApiReference(options =>
+    {
+        options.Authentication = new ScalarAuthenticationOptions
+        {
+            PreferredSecurityScheme = "Bearer"
+        };
+    });
 }
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

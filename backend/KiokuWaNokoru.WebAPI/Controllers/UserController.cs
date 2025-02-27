@@ -7,14 +7,14 @@ namespace KiokuWaNokoru.WebAPI.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class BotController(IBotService botService) : ControllerBase
+public class UserController(IJwtService jwtService) : ControllerBase
 {
-    private readonly IBotService _botService = botService;
+    private readonly IJwtService _jwtService = jwtService;
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
-    public async Task<ActionResult> Test(long id)
+    public async Task<ActionResult> Test(Guid id)
     {
-        await _botService.TestAsync(id);
-        return Ok();
+        return Ok(_jwtService.GenerateToken(id));
     }
 }

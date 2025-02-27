@@ -2,6 +2,7 @@
 using KiokuWaNokoru.BLL.Services;
 using KiokuWaNokoru.Bot.Interfaces;
 using KiokuWaNokoru.Bot.Services;
+using KiokuWaNokoru.Common.Configurations;
 using KiokuWaNokoru.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,8 @@ namespace KiokuWaNokoru.WebAPI.Extensions
         {
             services.AddTransient<IReminderService, ReminderService>();
             services.AddTransient<IBotService, BotService>();
+            services.AddTransient<IJwtService, JwtService>();
+            services.AddTransient<JwtConfiguration>();
         }
 
         public static void AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
