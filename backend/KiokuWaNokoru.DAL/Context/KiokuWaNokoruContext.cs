@@ -8,6 +8,7 @@ namespace KiokuWaNokoru.DAL.Context
     public class KiokuWaNokoruContext(DbContextOptions<KiokuWaNokoruContext> options) : DbContext(options)
     {
         public DbSet<Reminder> Reminders => Set<Reminder>();
+        public DbSet<User> Users => Set<User>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -15,6 +15,7 @@ namespace KiokuWaNokoru.WebAPI.Extensions
             services.AddTransient<IReminderService, ReminderService>();
             services.AddTransient<IBotService, BotService>();
             services.AddTransient<IJwtService, JwtService>();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<JwtConfiguration>();
         }
 
