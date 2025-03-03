@@ -1,6 +1,6 @@
 import { CreateReminder } from '@/common/types/types';
 import { Field } from '@/components/ui/field';
-import { Fieldset, Input } from '@chakra-ui/react';
+import { Fieldset, Input, Stack } from '@chakra-ui/react';
 import { useImperativeHandle, forwardRef } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { FormRef } from '@/common/interfaces/form-ref.interface';
@@ -49,24 +49,26 @@ const CreateReminderForm = forwardRef<FormRef>((_, ref) => {
   return (
     <Fieldset.Root size='lg' maxW='md'>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Fieldset.Content>
-          <Controller
-            control={control}
-            name='title'
-            rules={titleValidation}
-            render={({ field }) => (
-              <Field label='Name' invalid={!!errors.title} errorText={errors.title?.message}>
-                <Input {...field} />
-              </Field>
-            )}
-          />
-        </Fieldset.Content>
+        <Stack gap='4' w='full'>
+          <Fieldset.Content>
+            <Controller
+              control={control}
+              name='title'
+              rules={titleValidation}
+              render={({ field }) => (
+                <Field label='Name' invalid={!!errors.title} errorText={errors.title?.message}>
+                  <Input {...field} />
+                </Field>
+              )}
+            />
+          </Fieldset.Content>
 
-        <Fieldset.Content>
-          <Field label='Description'>
-            <Controller control={control} name='description' render={({ field }) => <Input {...field} />} />
-          </Field>
-        </Fieldset.Content>
+          <Fieldset.Content>
+            <Field label='Description'>
+              <Controller control={control} name='description' render={({ field }) => <Input {...field} />} />
+            </Field>
+          </Fieldset.Content>
+        </Stack>
       </form>
     </Fieldset.Root>
   );

@@ -13,14 +13,14 @@ public class UserController(IUserService userService) : ControllerBase
     private readonly IUserService _userService = userService;
 
     [AllowAnonymous]
-    [HttpPost("/register")]
+    [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(CreateUserDto dto)
     {
         return Ok(await _userService.CreateUserAsync(dto));
     }
 
     [AllowAnonymous]
-    [HttpPost("/login")]
+    [HttpPost("login")]
     public async Task<ActionResult<UserLoginResponseDto>> Login(UserLoginRequestDto dto)
     {
         return Ok(await _userService.LoginUserAsync(dto));

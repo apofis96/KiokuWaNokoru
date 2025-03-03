@@ -15,7 +15,7 @@ class BaseApi {
         this.basePath = basePath;
     }
 
-    public async fetch<T>(path: string = '', options?: Partial<ApiOptions>): Promise<T> {
+    protected async fetch<T>(path: string = '', options?: Partial<ApiOptions>): Promise<T> {
         const {
             method = ApiMethod.GET,
             payload = null,
