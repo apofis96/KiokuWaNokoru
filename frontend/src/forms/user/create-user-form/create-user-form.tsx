@@ -22,12 +22,6 @@ const CreateUserForm = forwardRef<FormRef>((_, ref) => {
     },
   });
 
-  useImperativeHandle(ref, () => ({
-    submit() {
-      handleSubmit(onSubmit)();
-    },
-  }));
-
   const mutation = useMutation({
     mutationFn: (newUser: CreateUser) => userApi.createUser(newUser),
     onSuccess: data => {
@@ -35,6 +29,12 @@ const CreateUserForm = forwardRef<FormRef>((_, ref) => {
       console.log(data);
     },
   });
+
+  useImperativeHandle(ref, () => ({
+    submit() {
+      handleSubmit(onSubmit)();
+    },
+  }));
 
   const onSubmit: SubmitHandler<CreateUser> = data => {
     mutation.mutate(data);

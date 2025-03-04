@@ -3,13 +3,15 @@ import { Field } from '@/components/ui/field';
 import { PasswordInput } from '@/components/ui/password-input';
 import { Fieldset, Input, Stack } from '@chakra-ui/react';
 import { useImperativeHandle, forwardRef } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { FormRef } from '@/common/interfaces/form-ref.interface';
 import { emailValidation, passwordValidation } from '@/common/validation-rules/validation-rules';
-import { useMutation } from '@tanstack/react-query';
-import { userApi } from '@/api/api';
 
-const LoginUserForm = forwardRef<FormRef>((_, ref) => {
+interface LoginUserFormProps {
+  onSubmit: (loginUser: LoginUserRequest) => void;
+}
+
+const LoginUserForm = forwardRef<FormRef, LoginUserFormProps>(({ onSubmit }, ref) => {
   const {
     control,
     handleSubmit,
@@ -26,18 +28,6 @@ const LoginUserForm = forwardRef<FormRef>((_, ref) => {
       handleSubmit(onSubmit)();
     },
   }));
-
-  const mutation = useMutation({
-    mutationFn: (loginUser: LoginUserRequest) => userApi.loginUser(loginUser),
-    onSuccess: data => {
-      alert('User login');
-      console.log(data);
-    },
-  });
-
-  const onSubmit: SubmitHandler<LoginUserRequest> = data => {
-    mutation.mutate(data);
-  };
 
   return (
     <Fieldset.Root size='lg' maxW='md'>
