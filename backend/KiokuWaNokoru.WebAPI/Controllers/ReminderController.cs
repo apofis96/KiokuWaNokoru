@@ -1,9 +1,11 @@
 using KiokuWaNokoru.BLL.Interfaces;
 using KiokuWaNokoru.Common.DTO.Reminder;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KiokuWaNokoru.WebAPI.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class ReminderController(ILogger<ReminderController> logger, IReminderService reminderService) : ControllerBase
