@@ -23,6 +23,8 @@ namespace KiokuWaNokoru.DAL.Context.EntityConfigurations
                 .HasMaxLength(255);
             builder.HasIndex(u => u.Email)
                 .IsUnique();
+
+            builder.HasMany(u => u.UserBotIntegrations);
         }
     }
 }

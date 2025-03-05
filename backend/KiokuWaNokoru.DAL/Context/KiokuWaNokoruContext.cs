@@ -9,6 +9,7 @@ namespace KiokuWaNokoru.DAL.Context
     {
         public DbSet<Reminder> Reminders => Set<Reminder>();
         public DbSet<User> Users => Set<User>();
+        public DbSet<UserBotIntegration> UserBotIntegrations => Set<UserBotIntegration>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

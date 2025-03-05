@@ -8,5 +8,7 @@ namespace KiokuWaNokoru.DAL.Entities
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string Salt { get; set; } = string.Empty;
+
+        public ICollection<UserBotIntegration> UserBotIntegrations { get; set; } = new List<UserBotIntegration>();
     }
 }
