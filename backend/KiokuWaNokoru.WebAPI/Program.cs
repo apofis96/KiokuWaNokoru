@@ -4,6 +4,7 @@ using DotNetEnv.Configuration;
 using DotNetEnv;
 using System.Reflection;
 using KiokuWaNokoru.BLL.MappingProfiles;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +51,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
 app.UseAuthentication();
 app.UseAuthorization();
 
