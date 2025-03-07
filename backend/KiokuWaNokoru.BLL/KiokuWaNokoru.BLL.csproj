@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KiokuWaNokoru.Bot\KiokuWaNokoru.Bot.csproj" />
     <ProjectReference Include="..\KiokuWaNokoru.Common\KiokuWaNokoru.Common.csproj" />
     <ProjectReference Include="..\KiokuWaNokoru.DAL\KiokuWaNokoru.DAL.csproj" />
   </ItemGroup>

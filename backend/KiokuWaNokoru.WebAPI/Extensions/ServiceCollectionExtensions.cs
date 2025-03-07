@@ -13,7 +13,6 @@ namespace KiokuWaNokoru.WebAPI.Extensions
         public static void AddCustomServices(this IServiceCollection services)
         {
             services.AddTransient<IReminderService, ReminderService>();
-            services.AddTransient<IBotService, BotService>();
             services.AddTransient<IJwtService, JwtService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserBotIntegrationService, UserBotIntegrationService>();
@@ -32,7 +31,7 @@ namespace KiokuWaNokoru.WebAPI.Extensions
         public static void AddTelegram(this IServiceCollection services, IConfiguration configuration)
         {
             var botToken = configuration["TelegramBotToken"];
-            services.AddSingleton<ITelegramCoreService>(_ => new TelegramCoreService(botToken));
+            services.AddSingleton<ITelegramCoreService>(sp => new TelegramCoreService(botToken, sp));
 
             services.AddHostedService<TelegramBackgroundService>();
 

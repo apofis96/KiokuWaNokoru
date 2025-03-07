@@ -3,7 +3,9 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
+using Microsoft.Extensions.DependencyInjection;
+using KiokuWaNokoru.BLL.Interfaces;
+using KiokuWaNokoru.Common.Enums;
 
 namespace KiokuWaNokoru.Bot.Services
 {
@@ -11,9 +13,11 @@ namespace KiokuWaNokoru.Bot.Services
     {
         private readonly string _botToken;
         private readonly TelegramBotClient _bot;
+        private readonly IServiceProvider _serviceProvider;
 
-        public TelegramCoreService(string? botToken)
+        public TelegramCoreService(string? botToken, IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             _botToken = botToken ?? throw new Exception("TelegramCoreService not started");
             _bot = new TelegramBotClient(_botToken);
 
@@ -37,8 +41,28 @@ namespace KiokuWaNokoru.Bot.Services
         {
             if (msg.Text == "/start")
             {
-                await _bot.SendMessage(msg.Chat, "Welcome! Pick one direction",
-                    replyMarkup: new InlineKeyboardButton[] { "Left", "Right" });
+                await _bot.SendMessage(msg.Chat, "Please provide an integration code");
+                return;
+            }
+
+            var isGuid = Guid.TryParse(msg.Text, out var guid);
+            if (!isGuid)
+            {
+                await _bot.SendMessage(msg.Chat, "Invalid code");
+                return;
+            }
+
+            using var scope = _serviceProvider.CreateScope();
+            var userBotIntegrationService = scope.ServiceProvider.GetRequiredService<IUserBotIntegrationService>();
+            try
+            {
+                await userBotIntegrationService.CompleteIntegration(guid, msg.Chat.Id.ToString(), BotProvider.Telegram);
+
+                await _bot.SendMessage(msg.Chat, "Integration successful");
+            }
+            catch (Exception e)
+            {
+                await _bot.SendMessage(msg.Chat, e.Message);
             }
         }
 
