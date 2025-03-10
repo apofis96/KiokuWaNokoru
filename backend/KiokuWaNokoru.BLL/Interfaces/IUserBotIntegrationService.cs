@@ -7,5 +7,6 @@ namespace KiokuWaNokoru.BLL.Interfaces
     {
         Task<CreateUserBotIntegrationResponseDto> InitializeIntegrationAsync(Guid userId);
         Task CompleteIntegration(Guid integrationId, string chatToken, BotProvider provider);
+        Task<IEnumerable<string>> GetAllTokensByPrviderAsync(BotProvider provider);
     }
 }

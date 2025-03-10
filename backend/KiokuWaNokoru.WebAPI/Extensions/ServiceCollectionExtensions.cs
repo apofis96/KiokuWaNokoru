@@ -32,9 +32,6 @@ namespace KiokuWaNokoru.WebAPI.Extensions
         {
             var botToken = configuration["TelegramBotToken"];
             services.AddSingleton<ITelegramCoreService>(sp => new TelegramCoreService(botToken, sp));
-
-            services.AddHostedService<TelegramBackgroundService>();
-
         }
     }
 }

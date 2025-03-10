@@ -42,5 +42,10 @@ namespace KiokuWaNokoru.BLL.Services
 
             await context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<string>> GetAllTokensByPrviderAsync(BotProvider provider)
+        {
+            return await context.UserBotIntegrations.Where(ubi => ubi.BotProvider == provider).Select(ubi => ubi.ChatToken).ToListAsync();
+        }
     }
 }

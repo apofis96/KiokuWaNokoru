@@ -20,6 +20,7 @@ builder.Services.AddCustomDbContext(builder.Configuration);
 builder.Services.AddCustomServices();
 builder.Services.AddTelegram(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddQuartzHosted();
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(automapper =>
