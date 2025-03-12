@@ -3,6 +3,6 @@
     public interface ITelegramCoreService
     {
         string GetBotToken();
-        Task SendMessage(long chatId);
+        Task SendMessage(long chatId, string message);
     }
 }

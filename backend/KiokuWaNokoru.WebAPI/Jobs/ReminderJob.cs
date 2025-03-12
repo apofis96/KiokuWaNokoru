@@ -5,23 +5,30 @@ using Quartz;
 
 namespace KiokuWaNokoru.WebAPI.Jobs
 {
-    public class ReminderJob(ITelegramCoreService telegramCoreService, IUserBotIntegrationService userBotIntegrationService) : IJob
+    public class ReminderJob(ITelegramCoreService telegramCoreService, IReminderService reminderService) : IJob
     {
         public async Task Execute(IJobExecutionContext context)
         {
-            var tokens = await userBotIntegrationService.GetAllTokensByPrviderAsync(BotProvider.Telegram);
-            foreach (var token in tokens)
+            var dateTime = DateTimeOffset.Now.ToUniversalTime();
+            var reminders = await reminderService.GetEllapsedAsync(dateTime);
+            
+            foreach (var reminder in reminders)
             {
                 try
                 {
-                    await telegramCoreService.SendMessage(long.Parse(token));
+                    var telegramTokens = reminder.ChatInfos.Where(r => r.BotProvider == BotProvider.Telegram).Select(r => r.ChatToken);
+                    foreach (var token in telegramTokens)
+                    {
+                        await telegramCoreService.SendMessage(long.Parse(token), reminder.Title + " @ " + reminder.Description);
+                        await reminderService.MarkAsDelivered(reminder.Id);
+                    }
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
                 }
             }
-            Console.WriteLine($"Job executed at {DateTime.Now}");
+            Console.WriteLine($"Job executed at {dateTime}, processed {reminders.Count()}");
         }
     }
 }

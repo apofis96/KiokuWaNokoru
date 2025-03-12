@@ -36,6 +36,20 @@ namespace KiokuWaNokoru.DAL.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
+                    b.Property<bool>("IsRecurring")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("NextFireAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("RecurrenceType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("RecurrenceValue")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -44,9 +58,14 @@ namespace KiokuWaNokoru.DAL.Migrations
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Reminders");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reminders", (string)null);
                 });
 
             modelBuilder.Entity("KiokuWaNokoru.DAL.Entities.User", b =>
@@ -87,7 +106,7 @@ namespace KiokuWaNokoru.DAL.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("KiokuWaNokoru.DAL.Entities.UserBotIntegration", b =>
@@ -118,7 +137,18 @@ namespace KiokuWaNokoru.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserBotIntegrations");
+                    b.ToTable("UserBotIntegrations", (string)null);
+                });
+
+            modelBuilder.Entity("KiokuWaNokoru.DAL.Entities.Reminder", b =>
+                {
+                    b.HasOne("KiokuWaNokoru.DAL.Entities.User", "User")
+                        .WithMany("Reminders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("KiokuWaNokoru.DAL.Entities.UserBotIntegration", b =>
@@ -134,6 +164,8 @@ namespace KiokuWaNokoru.DAL.Migrations
 
             modelBuilder.Entity("KiokuWaNokoru.DAL.Entities.User", b =>
                 {
+                    b.Navigation("Reminders");
+
                     b.Navigation("UserBotIntegrations");
                 });
 #pragma warning restore 612, 618

@@ -10,5 +10,6 @@ namespace KiokuWaNokoru.DAL.Entities
         public string Salt { get; set; } = string.Empty;
 
         public ICollection<UserBotIntegration> UserBotIntegrations { get; set; } = new List<UserBotIntegration>();
+        public ICollection<Reminder> Reminders { get; set; } = new List<Reminder>();
     }
 }

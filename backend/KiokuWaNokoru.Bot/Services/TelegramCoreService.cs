@@ -20,6 +20,7 @@ namespace KiokuWaNokoru.Bot.Services
             _serviceProvider = serviceProvider;
             _botToken = botToken ?? throw new Exception("TelegramCoreService not started");
             _bot = new TelegramBotClient(_botToken);
+            _bot.SetWebhook("");
 
             _bot.OnError += OnError;
             _bot.OnMessage += OnMessage;
@@ -76,9 +77,9 @@ namespace KiokuWaNokoru.Bot.Services
             }
         }
 
-        public async Task SendMessage(long chatId)
+        public async Task SendMessage(long chatId, string message)
         {
-            await _bot.SendMessage(chatId, "Hello World!");
+            await _bot.SendMessage(chatId, message);
         }
     }
 }

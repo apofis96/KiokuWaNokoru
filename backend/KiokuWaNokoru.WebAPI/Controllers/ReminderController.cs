@@ -1,5 +1,6 @@
 using KiokuWaNokoru.BLL.Interfaces;
 using KiokuWaNokoru.Common.DTO.Reminder;
+using KiokuWaNokoru.WebAPI.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,8 @@ public class ReminderController(ILogger<ReminderController> logger, IReminderSer
     [HttpPost]
     public async Task<ActionResult> CreateAsync([FromBody] CreateReminderDto dto)
     {
-        return Ok(await _reminderService.CreateAsync(dto));
+        var userId = User.GetUserId();
+        return Ok(await _reminderService.CreateAsync(dto, userId));
     }
 
     [HttpGet("{id}")]

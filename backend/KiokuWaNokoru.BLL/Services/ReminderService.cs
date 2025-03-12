@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Cronos;
 using KiokuWaNokoru.BLL.Interfaces;
 using KiokuWaNokoru.Common.DTO.Reminder;
+using KiokuWaNokoru.Common.DTO.UserBotIntegration;
 using KiokuWaNokoru.DAL.Context;
 using KiokuWaNokoru.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -28,9 +30,11 @@ namespace KiokuWaNokoru.BLL.Services
             return _mapper.Map<ReminderDto>(reminder);
         }
 
-        public async Task<ReminderDto> CreateAsync(CreateReminderDto reminderDto)
+        public async Task<ReminderDto> CreateAsync(CreateReminderDto reminderDto, Guid userId)
         {
             var newReminder = _mapper.Map<Reminder>(reminderDto);
+            newReminder.UserId = userId;
+            newReminder.NextFireAt = newReminder.NextFireAt.ToUniversalTime();
 
             _context.Reminders.Add(newReminder);
             await _context.SaveChangesAsync();
@@ -51,6 +55,54 @@ namespace KiokuWaNokoru.BLL.Services
         {
             var reminder = await _context.Reminders.FirstOrDefaultAsync(r => r.Id == id) ?? throw new Exception();
             _context.Reminders.Remove(reminder);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<ReminderChatInfoDto>> GetEllapsedAsync(DateTimeOffset dateTime)
+        {
+            var reminders = await _context.Reminders
+                .Include(r => r.User)
+                .ThenInclude(u => u.UserBotIntegrations)
+                .Where(r => r.NextFireAt < dateTime)
+                .Select(r => new ReminderChatInfoDto
+                {
+                    Id = r.Id,
+                    Title = r.Title,
+                    Description = r.Description,
+                    ChatInfos = r.User.UserBotIntegrations.Select(ubi => new UserBotIntegrationChatInfoDto
+                    {
+                        ChatToken = ubi.ChatToken,
+                        BotProvider = ubi.BotProvider,
+                    }),
+                })
+                .AsNoTracking()
+                .ToListAsync();
+            
+            return reminders;
+        }
+
+        public async Task MarkAsDelivered(Guid id)
+        {
+            var reminder = await _context.Reminders.FirstOrDefaultAsync(r => r.Id == id);
+            if (reminder == null)
+                return;
+
+            if (!reminder.IsRecurring)
+            {
+                reminder.NextFireAt = DateTimeOffset.MaxValue.ToUniversalTime();
+                await _context.SaveChangesAsync();
+                return;
+            }
+            
+            if (reminder.RecurrenceType == Common.Enums.Recurrence.Days)
+            {
+                reminder.NextFireAt = reminder.NextFireAt.AddDays(double.Parse(reminder.RecurrenceValue));
+            }
+            else
+            {
+                var cron = CronExpression.Parse(reminder.RecurrenceValue);
+                reminder.NextFireAt = cron.GetNextOccurrence(reminder.NextFireAt.ToUniversalTime(), TimeZoneInfo.Utc) ?? throw new Exception();
+            }
             await _context.SaveChangesAsync();
         }
     }
