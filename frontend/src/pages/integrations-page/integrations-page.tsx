@@ -1,10 +1,10 @@
-import { Spinner } from '@chakra-ui/react';
 import './integration-page.scss';
+import { CreateIntegrationDialog } from './components/create-integration-dialog/create-integration-dialog';
 
 const IntegrationsPage = () => {
   return (
     <>
-      <Spinner size='xl' />
+      <CreateIntegrationDialog />
     </>
   );
 };

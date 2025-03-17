@@ -1,5 +1,5 @@
 using KiokuWaNokoru.BLL.Interfaces;
-using KiokuWaNokoru.Common.DTO.User;
+using KiokuWaNokoru.Common.DTO.UserBotIntegration;
 using KiokuWaNokoru.WebAPI.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +12,7 @@ namespace KiokuWaNokoru.WebAPI.Controllers;
 public class UserBotIntegrationController(IUserBotIntegrationService userBotIntegrationService) : ControllerBase
 {
     [HttpGet("initialize")]
-    public async Task<ActionResult<UserLoginResponseDto>> InitializeIntegration()
+    public async Task<ActionResult<CreateUserBotIntegrationResponseDto>> InitializeIntegration()
     {
         var userId = User.GetUserId();
         return Ok(await userBotIntegrationService.InitializeIntegrationAsync(userId));
