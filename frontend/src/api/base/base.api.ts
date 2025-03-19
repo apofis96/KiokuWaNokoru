@@ -36,7 +36,30 @@ class BaseApi {
         if (response.status === 401) {
             useUserStore.setState({ accessToken: null });
         }
-        return response.json();
+        const data = await response.json();
+
+        return this.parseDates(data);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private parseDates(obj: any): any {
+        if (obj === null || obj === undefined) return obj;
+
+        if (typeof obj === 'string' && !isNaN(Date.parse(obj))) {
+            return new Date(obj);
+        }
+
+        if (Array.isArray(obj)) {
+            return obj.map(item => this.parseDates(item));
+        }
+
+        if (typeof obj === 'object') {
+            return Object.fromEntries(
+                Object.entries(obj).map(([key, value]) => [key, this.parseDates(value)])
+            );
+        }
+
+        return obj;
     }
 }
 

@@ -9,3 +9,6 @@ export type { LoginUserRequest } from './user/login-user-request.type';
 export type { LoginUserResponse } from './user/login-user-response.type';
 
 export type { CreateBotIntegration } from './bot-integration/create-bot-integration.type'
+export type { BotIntegration } from './bot-integration/bot-integration.type'
+
+export type { TableType } from './base/table.type';
