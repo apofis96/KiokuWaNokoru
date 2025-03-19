@@ -1,4 +1,5 @@
 ﻿using KiokuWaNokoru.BLL.Interfaces;
+using KiokuWaNokoru.Common.DTO.Common;
 using KiokuWaNokoru.Common.DTO.UserBotIntegration;
 using KiokuWaNokoru.Common.Enums;
 using KiokuWaNokoru.DAL.Context;
@@ -46,6 +47,22 @@ namespace KiokuWaNokoru.BLL.Services
         public async Task<IEnumerable<string>> GetAllTokensByPrviderAsync(BotProvider provider)
         {
             return await context.UserBotIntegrations.Where(ubi => ubi.BotProvider == provider).Select(ubi => ubi.ChatToken).ToListAsync();
+        }
+
+        public async Task<TableDto<UserBotIntegrationDto>> GetIntegrationsByUserAsync(Guid userId)
+        {
+            var items = await context.UserBotIntegrations
+                .Where(ubi => ubi.UserId == userId)
+                .Select(ubi => new UserBotIntegrationDto
+                {
+                    Id = ubi.Id,
+                    BotProvider = ubi.BotProvider,
+                    CreatedAt = ubi.CreatedAt,
+                })
+                .ToListAsync();
+            var total = await context.UserBotIntegrations.CountAsync(ubi => ubi.UserId == userId);
+
+            return new() { Items = items, Total = total };
         }
     }
 }
