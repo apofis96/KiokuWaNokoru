@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Cronos;
 using KiokuWaNokoru.BLL.Interfaces;
+using KiokuWaNokoru.Common.DTO.Common;
 using KiokuWaNokoru.Common.DTO.Reminder;
 using KiokuWaNokoru.Common.DTO.UserBotIntegration;
 using KiokuWaNokoru.DAL.Context;
@@ -104,6 +105,22 @@ namespace KiokuWaNokoru.BLL.Services
                 reminder.NextFireAt = cron.GetNextOccurrence(reminder.NextFireAt.ToUniversalTime(), TimeZoneInfo.Utc) ?? throw new Exception();
             }
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<TableDto<ReminderDto>> GetByUserIdAsync(Guid userId)
+        {
+            var reminders = await _context.Reminders
+                .Where(r => r.UserId == userId)
+                .ToListAsync();
+            var total = await _context.Reminders
+                .Where(r => r.UserId == userId)
+                .CountAsync();
+
+            return new TableDto<ReminderDto>
+            {
+                Items = _mapper.Map<IEnumerable<ReminderDto>>(reminders),
+                Total = total,
+            };
         }
     }
 }

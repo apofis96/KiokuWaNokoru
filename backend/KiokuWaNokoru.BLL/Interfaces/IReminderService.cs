@@ -1,4 +1,5 @@
-﻿using KiokuWaNokoru.Common.DTO.Reminder;
+﻿using KiokuWaNokoru.Common.DTO.Common;
+using KiokuWaNokoru.Common.DTO.Reminder;
 
 namespace KiokuWaNokoru.BLL.Interfaces
 {
@@ -11,5 +12,6 @@ namespace KiokuWaNokoru.BLL.Interfaces
         Task DeleteAsync(Guid id);
         Task<IEnumerable<ReminderChatInfoDto>> GetEllapsedAsync(DateTimeOffset dateTime);
         Task MarkAsDelivered(Guid id);
+        Task<TableDto<ReminderDto>> GetByUserIdAsync(Guid userId);
     }
 }

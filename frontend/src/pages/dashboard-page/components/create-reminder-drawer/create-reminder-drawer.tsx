@@ -20,7 +20,7 @@ const CreateReminderDrawer = () => {
   const formRef = useRef<FormRef>(null);
 
   return (
-    <DrawerRoot open={isCreateReminderOpen} onOpenChange={toggleCreateReminderOpen}>
+    <DrawerRoot size={'md'} open={isCreateReminderOpen} onOpenChange={toggleCreateReminderOpen}>
       <DrawerBackdrop />
       <DrawerContent>
         <DrawerHeader>

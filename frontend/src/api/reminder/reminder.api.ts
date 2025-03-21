@@ -1,13 +1,8 @@
-import { CreateReminder, Reminder } from "@/common/types/types";
+import { CreateReminder, Reminder, TableType } from "@/common/types/types";
 import { BaseApi } from "../base/base.api";
 import { ApiMethod } from "@/common/enums/enums";
 
 class ReminderApi extends BaseApi {
-
-    async getAllReminders() {
-        const response = await this.fetch<Reminder[]>();
-        return response;
-    }
 
     async createReminder(data: CreateReminder) {
         return this.fetch(
@@ -15,6 +10,15 @@ class ReminderApi extends BaseApi {
             {
                 method: ApiMethod.POST,
                 payload: data
+            }
+        );
+    }
+
+    async getAllReminders() {
+        return this.fetch<TableType<Reminder>>(
+            '/all',
+            {
+                method: ApiMethod.GET,
             }
         );
     }
