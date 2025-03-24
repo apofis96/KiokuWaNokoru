@@ -23,8 +23,6 @@ class BaseApi {
             payload = null,
         } = options ?? {};
 
-        console.log(`${this.baseUrl}${this.basePath}${path}`);
-
         const response = await fetch(`${this.baseUrl}${this.basePath}${path}`, {
             method,
             headers: {
@@ -36,6 +34,9 @@ class BaseApi {
         if (response.status === 401) {
             useUserStore.setState({ accessToken: null });
         }
+        if (response.status === 204) {
+            return null as T;
+        }
         const data = await response.json();
 
         return this.parseDates(data);
@@ -45,7 +46,7 @@ class BaseApi {
     private parseDates(obj: any): any {
         if (obj === null || obj === undefined) return obj;
 
-        if (typeof obj === 'string' && !isNaN(Date.parse(obj))) {
+        if (typeof obj === 'string' && isNaN(Number(obj)) && !isNaN(Date.parse(obj))) {
             return new Date(obj);
         }
 

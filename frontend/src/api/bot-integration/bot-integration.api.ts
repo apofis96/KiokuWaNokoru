@@ -21,6 +21,15 @@ class BotIntegrationApi extends BaseApi {
             }
         );
     }
+
+    async removeIntegration(id: string) {
+        return this.fetch<void>(
+            `/${id}`,
+            {
+                method: ApiMethod.DELETE,
+            }
+        );
+    }
 }
 
 const botIntegrationApi = new BotIntegrationApi({

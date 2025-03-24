@@ -25,8 +25,7 @@ const CreateUserForm = forwardRef<FormRef>((_, ref) => {
   const mutation = useMutation({
     mutationFn: (newUser: CreateUser) => userApi.createUser(newUser),
     onSuccess: data => {
-      alert('User created');
-      console.log(data);
+      alert('User created ' + data.id);
     },
   });
 

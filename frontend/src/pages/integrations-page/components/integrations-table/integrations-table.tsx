@@ -1,7 +1,7 @@
 import { botIntegrationApi } from '@/api/api';
 import { QueryKey } from '@/common/enums/enums';
 import { ActionBar, Button, Checkbox, Portal, Table } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 const IntegrationsTable = () => {
@@ -9,6 +9,18 @@ const IntegrationsTable = () => {
   const botIntegrations = useQuery({
     queryKey: [QueryKey.BotIntegrations],
     queryFn: async () => await botIntegrationApi.getAllIntegrations(),
+  });
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (selectedIds: string[]) => Promise.all(selectedIds.map(id => botIntegrationApi.removeIntegration(id))),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QueryKey.BotIntegrations],
+      });
+      setSelection([]);
+    },
   });
 
   const items = botIntegrations.data?.items || [];
@@ -70,7 +82,12 @@ const IntegrationsTable = () => {
             <ActionBar.Content>
               <ActionBar.SelectionTrigger>{selection.length} selected</ActionBar.SelectionTrigger>
               <ActionBar.Separator />
-              <Button variant='outline' size='sm'>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() => mutation.mutate(selection)}
+                disabled={mutation.isPending}
+              >
                 Delete
               </Button>
             </ActionBar.Content>

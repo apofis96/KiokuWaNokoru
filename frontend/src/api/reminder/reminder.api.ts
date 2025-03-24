@@ -22,6 +22,15 @@ class ReminderApi extends BaseApi {
             }
         );
     }
+
+    async removeReminder(id: string) {
+        return this.fetch<void>(
+            `/${id}`,
+            {
+                method: ApiMethod.DELETE,
+            }
+        );
+    }
 }
 
 const reminderApi = new ReminderApi({
