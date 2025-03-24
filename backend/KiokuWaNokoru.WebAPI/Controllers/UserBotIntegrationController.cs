@@ -25,4 +25,12 @@ public class UserBotIntegrationController(IUserBotIntegrationService userBotInte
         var userId = User.GetUserId();
         return Ok(await userBotIntegrationService.GetIntegrationsByUserAsync(userId));
     }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteAsync(Guid id)
+    {
+        var userId = User.GetUserId();
+        await userBotIntegrationService.DeleteAsync(id, userId);
+        return NoContent();
+    }
 }

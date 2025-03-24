@@ -10,5 +10,6 @@ namespace KiokuWaNokoru.BLL.Interfaces
         Task CompleteIntegration(Guid integrationId, string chatToken, BotProvider provider);
         Task<IEnumerable<string>> GetAllTokensByPrviderAsync(BotProvider provider);
         Task<TableDto<UserBotIntegrationDto>> GetIntegrationsByUserAsync(Guid userId);
+        Task DeleteAsync(Guid id, Guid userId);
     }
 }

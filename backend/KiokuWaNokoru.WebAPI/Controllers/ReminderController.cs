@@ -43,7 +43,8 @@ public class ReminderController(ILogger<ReminderController> logger, IReminderSer
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteAsync(Guid id)
     {
-        await _reminderService.DeleteAsync(id);
+        var userId = User.GetUserId();
+        await _reminderService.DeleteAsync(id, userId);
         return NoContent();
     }
 

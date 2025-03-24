@@ -64,5 +64,12 @@ namespace KiokuWaNokoru.BLL.Services
 
             return new() { Items = items, Total = total };
         }
+
+        public async Task DeleteAsync(Guid id, Guid userId)
+        {
+            var integration = await context.UserBotIntegrations.FirstOrDefaultAsync(i => i.Id == id && i.UserId == userId) ?? throw new KeyNotFoundException();
+            context.UserBotIntegrations.Remove(integration);
+            await context.SaveChangesAsync();
+        }
     }
 }

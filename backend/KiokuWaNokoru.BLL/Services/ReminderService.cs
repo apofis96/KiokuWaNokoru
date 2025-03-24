@@ -26,7 +26,7 @@ namespace KiokuWaNokoru.BLL.Services
 
         public async Task<ReminderDto> GetByIdAsync(Guid id)
         {
-            var reminder = await _context.Reminders.FirstOrDefaultAsync(r => r.Id == id) ?? throw new Exception();
+            var reminder = await _context.Reminders.FirstOrDefaultAsync(r => r.Id == id) ?? throw new KeyNotFoundException();
 
             return _mapper.Map<ReminderDto>(reminder);
         }
@@ -45,16 +45,16 @@ namespace KiokuWaNokoru.BLL.Services
 
         public async Task<ReminderDto> UpdateAsync(Guid id, UpdateReminderDto reminderDto)
         {
-            var reminder = await _context.Reminders.FirstOrDefaultAsync(r => r.Id == id) ?? throw new Exception();
+            var reminder = await _context.Reminders.FirstOrDefaultAsync(r => r.Id == id) ?? throw new KeyNotFoundException();
             reminder = _mapper.Map(reminderDto, reminder);
             await _context.SaveChangesAsync();
 
             return _mapper.Map<ReminderDto>(reminder);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id, Guid userId)
         {
-            var reminder = await _context.Reminders.FirstOrDefaultAsync(r => r.Id == id) ?? throw new Exception();
+            var reminder = await _context.Reminders.FirstOrDefaultAsync(r => r.Id == id && r.UserId == userId) ?? throw new KeyNotFoundException();
             _context.Reminders.Remove(reminder);
             await _context.SaveChangesAsync();
         }
