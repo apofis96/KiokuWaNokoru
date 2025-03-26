@@ -1,5 +1,6 @@
 import { botIntegrationApi } from '@/api/api';
 import { QueryKey } from '@/common/enums/enums';
+import { ActionCell } from '@/components/components';
 import { ActionBar, Button, Checkbox, Portal, Table } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -22,6 +23,10 @@ const IntegrationsTable = () => {
       setSelection([]);
     },
   });
+
+  const handleDelete = (id: string) => {
+    mutation.mutate([id]);
+  };
 
   const items = botIntegrations.data?.items || [];
   const hasSelection = selection.length > 0;
@@ -46,6 +51,7 @@ const IntegrationsTable = () => {
       <Table.Cell>{item.id}</Table.Cell>
       <Table.Cell>{item.botProvider}</Table.Cell>
       <Table.Cell>{item.createdAt.toDateString()}</Table.Cell>
+      <ActionCell id={item.id} onDelete={handleDelete} />
     </Table.Row>
   ));
 
@@ -71,6 +77,7 @@ const IntegrationsTable = () => {
             <Table.ColumnHeader>Id</Table.ColumnHeader>
             <Table.ColumnHeader>Provider</Table.ColumnHeader>
             <Table.ColumnHeader>Created at</Table.ColumnHeader>
+            <Table.ColumnHeader></Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>{rows}</Table.Body>

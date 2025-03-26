@@ -1,5 +1,6 @@
 import { reminderApi } from '@/api/api';
 import { QueryKey } from '@/common/enums/enums';
+import { ActionCell } from '@/components/components';
 import { ActionBar, Button, Checkbox, Portal, Table } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -22,6 +23,13 @@ const RemindersTable = () => {
       setSelection([]);
     },
   });
+
+  const handleDelete = (id: string) => {
+    mutation.mutate([id]);
+  };
+  const handleEdit = (id: string) => {
+    console.log('Edit reminder with id:', id);
+  };
 
   const items = reminders.data?.items || [];
   const hasSelection = selection.length > 0;
@@ -51,6 +59,7 @@ const RemindersTable = () => {
       <Table.Cell>{item.recurrenceValue}</Table.Cell>
       <Table.Cell>{item.nextFireAt.toDateString()}</Table.Cell>
       <Table.Cell>{item.createdAt.toDateString()}</Table.Cell>
+      <ActionCell id={item.id} onDelete={handleDelete} onEdit={handleEdit} />
     </Table.Row>
   ));
 
@@ -81,6 +90,7 @@ const RemindersTable = () => {
             <Table.ColumnHeader>Recurrence value</Table.ColumnHeader>
             <Table.ColumnHeader>Next fire at</Table.ColumnHeader>
             <Table.ColumnHeader>Created at</Table.ColumnHeader>
+            <Table.ColumnHeader />
           </Table.Row>
         </Table.Header>
         <Table.Body>{rows}</Table.Body>
