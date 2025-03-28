@@ -2,6 +2,7 @@ import { Box, Stack, IconButton } from '@chakra-ui/react';
 import { LuCalendarFold, LuBotMessageSquare } from 'react-icons/lu';
 import { useLocation, useNavigate } from 'react-router';
 import { Page } from '@/common/enums/enums';
+import { LogoutButton } from './components/logout-button';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const Sidebar = () => {
 
   return (
     <Box bg='gray.900' color='white' p={4}>
-      <Stack>
+      <Stack height={'100%'}>
         <IconButton
           onClick={() => navigate(Page.Dashboard)}
           aria-label='Dashboard'
@@ -26,6 +27,7 @@ const Sidebar = () => {
         >
           <LuBotMessageSquare />
         </IconButton>
+        <LogoutButton />
       </Stack>
     </Box>
   );

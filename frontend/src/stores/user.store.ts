@@ -5,6 +5,7 @@ import { persist } from 'zustand/middleware'
 export interface UserStore {
     accessToken?: string | null;
     setUser: (userData: LoginUserResponse) => void;
+    logout: () => void;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -12,6 +13,7 @@ export const useUserStore = create<UserStore>()(
         (set) => ({
             accessToken: null,
             setUser: (userData: LoginUserResponse) => set({ accessToken: userData.accessToken }),
+            logout: () => set({ accessToken: null }),
         }),
         {
             name: 'user-storage',
