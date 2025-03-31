@@ -1,23 +1,23 @@
 import { botIntegrationApi } from '@/api/api';
 import { QueryKey } from '@/common/enums/enums';
-import { Button, Dialog, Portal, Spinner, useDialog } from '@chakra-ui/react';
+import { Button, Dialog, Portal, Spinner } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { Clipboard } from '@/components/components';
 
-const CreateIntegrationDialog = () => {
-  const dialog = useDialog();
+export interface CreateIntegrationProps {
+  isOpen: boolean;
+  onOpenChange: (isOpen: boolean) => void;
+}
 
+const CreateIntegrationDialog = ({ isOpen, onOpenChange }: CreateIntegrationProps) => {
   const botIntegration = useQuery({
     queryKey: [QueryKey.CreateBotIntegration],
     queryFn: async () => await botIntegrationApi.createIntegration(),
-    enabled: dialog.open,
+    enabled: isOpen,
   });
 
   return (
-    <Dialog.RootProvider lazyMount value={dialog}>
-      <Dialog.Trigger asChild>
-        <Button size='sm'>Create Integration</Button>
-      </Dialog.Trigger>
+    <Dialog.Root lazyMount open={isOpen} onOpenChange={details => onOpenChange(details.open)}>
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
@@ -37,7 +37,7 @@ const CreateIntegrationDialog = () => {
           </Dialog.Content>
         </Dialog.Positioner>
       </Portal>
-    </Dialog.RootProvider>
+    </Dialog.Root>
   );
 };
 

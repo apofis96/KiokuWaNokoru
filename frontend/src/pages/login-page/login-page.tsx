@@ -10,8 +10,12 @@ import { userApi } from '@/api/api';
 import { useUserStore } from '@/stores/user.store';
 import { useNavigate } from 'react-router';
 import { LoginUserRequest } from '@/common/types/types';
+import { useHeaderStore } from '@/stores/header.store';
 
 const LoginPage = () => {
+  const setNavigation = useHeaderStore(state => state.setNavigation);
+  setNavigation('Login');
+
   const formRef = useRef<FormRef>(null);
 
   const setUser = useUserStore(state => state.setUser);

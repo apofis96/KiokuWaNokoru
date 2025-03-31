@@ -11,7 +11,7 @@ const Sidebar = () => {
   const getIconVariant = (page: string) => (location.pathname === page ? 'solid' : 'surface');
 
   return (
-    <Box bg='gray.900' color='white' p={4}>
+    <Box bg='gray.950' color='white' p={4}>
       <Stack height={'100%'}>
         <IconButton
           onClick={() => navigate(Page.Dashboard)}
