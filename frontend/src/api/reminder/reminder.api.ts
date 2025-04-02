@@ -14,6 +14,16 @@ class ReminderApi extends BaseApi {
         );
     }
 
+    async updateReminder(id: string, data: CreateReminder) {
+        return this.fetch(
+            `/${id}`,
+            {
+                method: ApiMethod.PUT,
+                payload: data
+            }
+        );
+    }
+
     async getAllReminders() {
         return this.fetch<TableType<Reminder>>(
             '/all',
@@ -28,6 +38,15 @@ class ReminderApi extends BaseApi {
             `/${id}`,
             {
                 method: ApiMethod.DELETE,
+            }
+        );
+    }
+
+    async getReminder(id: string) {
+        return this.fetch<Reminder>(
+            `/${id}`,
+            {
+                method: ApiMethod.GET,
             }
         );
     }

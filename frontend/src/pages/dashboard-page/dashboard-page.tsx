@@ -13,7 +13,7 @@ const DashboardPage = forwardRef<PageRef>((_, ref) => {
   useImperativeHandle(ref, () => ({
     action(id: string) {
       if (id === 'Create Reminder') {
-        toggleCreateReminderOpen();
+        toggleCreateReminderOpen(null);
       }
     },
   }));

@@ -1,12 +1,14 @@
 import { reminderApi } from '@/api/api';
 import { QueryKey } from '@/common/enums/enums';
 import { ActionCell } from '@/components/components';
+import { useDrawerStore } from '@/stores/drawer.store';
 import { ActionBar, Button, Checkbox, Portal, Table } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 const RemindersTable = () => {
   const [selection, setSelection] = useState<string[]>([]);
+  const { toggleCreateReminderOpen } = useDrawerStore();
   const reminders = useQuery({
     queryKey: [QueryKey.Reminders],
     queryFn: async () => await reminderApi.getAllReminders(),
@@ -28,7 +30,7 @@ const RemindersTable = () => {
     mutation.mutate([id]);
   };
   const handleEdit = (id: string) => {
-    console.log('Edit reminder with id:', id);
+    toggleCreateReminderOpen(id);
   };
 
   const items = reminders.data?.items || [];
@@ -65,7 +67,7 @@ const RemindersTable = () => {
 
   return (
     <>
-      <Table.Root>
+      <Table.Root width={'full'} striped>
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeader w='6'>

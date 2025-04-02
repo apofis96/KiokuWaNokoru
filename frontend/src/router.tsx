@@ -23,7 +23,7 @@ const Router = () => {
       <Box flexGrow={1}>
         <Header onActionClick={handleHeaderClick} />
         <Flex grow={1}>
-          <Box p={{ base: '0.5em' }}>
+          <Box width='full'>
             <Routes>
               {isAuthorized && <Route path={Page.Dashboard} element={<DashboardPage ref={pageRef} />} />}
               {isAuthorized && <Route path={Page.Integrations} element={<IntegrationsPage ref={pageRef} />} />}

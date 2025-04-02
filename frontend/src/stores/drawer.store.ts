@@ -1,11 +1,13 @@
 import { create } from 'zustand';
 
 export interface DrawerStore {
+    editReminderId: string | null;
     isCreateReminderOpen: boolean;
-    toggleCreateReminderOpen: () => void;
+    toggleCreateReminderOpen: (id: string | null) => void;
 }
 
 export const useDrawerStore = create<DrawerStore>((set) => ({
+    editReminderId: null,
     isCreateReminderOpen: false,
-    toggleCreateReminderOpen: () => set((state) => ({ isCreateReminderOpen: !state.isCreateReminderOpen })),
+    toggleCreateReminderOpen: (id: string | null) => set((state) => ({ isCreateReminderOpen: !state.isCreateReminderOpen, editReminderId: id })),
 }));

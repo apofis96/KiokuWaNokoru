@@ -1,4 +1,4 @@
-import { CreateReminder } from '@/common/types/types';
+import { CreateReminder, Reminder } from '@/common/types/types';
 import { Field } from '@/components/ui/field';
 import { Fieldset, Input, NativeSelect, Stack, Switch } from '@chakra-ui/react';
 import { useImperativeHandle, forwardRef } from 'react';
@@ -10,7 +10,11 @@ import { reminderApi } from '@/api/api';
 import { useDrawerStore } from '@/stores/drawer.store';
 import { QueryKey, Recurrence } from '@/common/enums/enums';
 
-const CreateReminderForm = forwardRef<FormRef>((_, ref) => {
+export interface CreateReminderFormProps {
+  reminder: Reminder | null;
+}
+
+const CreateReminderForm = forwardRef<FormRef, CreateReminderFormProps>(({ reminder }, ref) => {
   const {
     control,
     setValue,
@@ -18,12 +22,12 @@ const CreateReminderForm = forwardRef<FormRef>((_, ref) => {
     formState: { errors },
   } = useForm<CreateReminder>({
     defaultValues: {
-      title: '',
-      description: '',
-      nextFireAt: new Date(),
-      isRecurring: false,
-      recurrenceType: Recurrence.Cron,
-      recurrenceValue: '',
+      title: reminder?.title || '',
+      description: reminder?.description || '',
+      nextFireAt: reminder?.nextFireAt || new Date(),
+      isRecurring: reminder?.isRecurring || false,
+      recurrenceType: reminder?.recurrenceType || Recurrence.Cron,
+      recurrenceValue: reminder?.recurrenceValue || '',
     },
   });
 
@@ -38,9 +42,10 @@ const CreateReminderForm = forwardRef<FormRef>((_, ref) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (newReminder: CreateReminder) => reminderApi.createReminder(newReminder),
+    mutationFn: (newReminder: CreateReminder) =>
+      !reminder?.id ? reminderApi.createReminder(newReminder) : reminderApi.updateReminder(reminder!.id, newReminder),
     onSuccess: () => {
-      toggleCreateReminderOpen();
+      toggleCreateReminderOpen(null);
       queryClient.invalidateQueries({
         queryKey: [QueryKey.Reminders],
       });
