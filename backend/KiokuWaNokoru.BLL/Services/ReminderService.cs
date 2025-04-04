@@ -36,6 +36,10 @@ namespace KiokuWaNokoru.BLL.Services
             var newReminder = _mapper.Map<Reminder>(reminderDto);
             newReminder.UserId = userId;
             newReminder.NextFireAt = newReminder.NextFireAt.ToUniversalTime();
+            if (!newReminder.IsOfNotificationTime)
+            {
+                newReminder.NextFireAt = await GetUserNotificationTime(userId, newReminder.NextFireAt);
+            }
 
             _context.Reminders.Add(newReminder);
             await _context.SaveChangesAsync();
@@ -43,9 +47,13 @@ namespace KiokuWaNokoru.BLL.Services
             return _mapper.Map<ReminderDto>(newReminder);
         }
 
-        public async Task<ReminderDto> UpdateAsync(Guid id, UpdateReminderDto reminderDto)
+        public async Task<ReminderDto> UpdateAsync(Guid id, Guid userId, UpdateReminderDto reminderDto)
         {
-            var reminder = await _context.Reminders.FirstOrDefaultAsync(r => r.Id == id) ?? throw new KeyNotFoundException();
+            var reminder = await _context.Reminders.FirstOrDefaultAsync(r => r.Id == id && r.UserId == userId) ?? throw new KeyNotFoundException();
+            if (!reminderDto.IsOfNotificationTime && reminder.IsOfNotificationTime)
+            {
+                reminderDto.NextFireAt = await GetUserNotificationTime(userId, reminderDto.NextFireAt.ToUniversalTime());
+            }
             reminder = _mapper.Map(reminderDto, reminder);
             await _context.SaveChangesAsync();
 
@@ -78,7 +86,7 @@ namespace KiokuWaNokoru.BLL.Services
                 })
                 .AsNoTracking()
                 .ToListAsync();
-            
+
             return reminders;
         }
 
@@ -94,7 +102,7 @@ namespace KiokuWaNokoru.BLL.Services
                 await _context.SaveChangesAsync();
                 return;
             }
-            
+
             if (reminder.RecurrenceType == Common.Enums.Recurrence.Days)
             {
                 reminder.NextFireAt = reminder.NextFireAt.AddDays(double.Parse(reminder.RecurrenceValue));
@@ -103,6 +111,10 @@ namespace KiokuWaNokoru.BLL.Services
             {
                 var cron = CronExpression.Parse(reminder.RecurrenceValue);
                 reminder.NextFireAt = cron.GetNextOccurrence(reminder.NextFireAt.ToUniversalTime(), TimeZoneInfo.Utc) ?? throw new Exception();
+                if (!reminder.IsOfNotificationTime)
+                {
+                    reminder.NextFireAt = await GetUserNotificationTime(reminder.UserId, reminder.NextFireAt);
+                }
             }
             await _context.SaveChangesAsync();
         }
@@ -121,6 +133,23 @@ namespace KiokuWaNokoru.BLL.Services
                 Items = _mapper.Map<IEnumerable<ReminderDto>>(reminders),
                 Total = total,
             };
+        }
+
+        private async Task<DateTimeOffset> GetUserNotificationTime(Guid userId, DateTimeOffset dateTimeOffset)
+        {
+            var settingsTime = await _context.UserSettings
+                .Where(us => us.UserId == userId)
+                .Select(us => us.NotificationTime)
+                .FirstOrDefaultAsync();
+            return new DateTimeOffset(
+                dateTimeOffset.Year,
+                dateTimeOffset.Month,
+                dateTimeOffset.Day,
+                settingsTime.Hour,
+                settingsTime.Minute,
+                settingsTime.Second,
+                dateTimeOffset.Offset
+            );
         }
     }
 }

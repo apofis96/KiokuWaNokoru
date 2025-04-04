@@ -12,6 +12,7 @@ namespace KiokuWaNokoru.DAL.Entities
         public Recurrence RecurrenceType { get; set; }
         public string RecurrenceValue { get; set; } = string.Empty;
         public DateTimeOffset NextFireAt { get; set; } = DateTimeOffset.MaxValue;
+        public bool IsOfNotificationTime { get; set; } = false;
 
         public User User { get; set; } = null!;
     }

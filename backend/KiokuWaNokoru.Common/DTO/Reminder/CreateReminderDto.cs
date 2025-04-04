@@ -10,5 +10,6 @@ namespace KiokuWaNokoru.Common.DTO.Reminder
         public Recurrence RecurrenceType { get; set; }
         public required string RecurrenceValue { get; set; }
         public DateTimeOffset NextFireAt { get; set; }
+        public bool IsOfNotificationTime { get; set; } = false;
     }
 }

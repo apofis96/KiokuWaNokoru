@@ -11,5 +11,6 @@ namespace KiokuWaNokoru.DAL.Entities
 
         public ICollection<UserBotIntegration> UserBotIntegrations { get; set; } = new List<UserBotIntegration>();
         public ICollection<Reminder> Reminders { get; set; } = new List<Reminder>();
+        public UserSettings UserSettings { get; set; } = new UserSettings();
     }
 }

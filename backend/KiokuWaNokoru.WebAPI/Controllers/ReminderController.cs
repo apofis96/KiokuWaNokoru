@@ -37,7 +37,8 @@ public class ReminderController(ILogger<ReminderController> logger, IReminderSer
     [HttpPut("{id}")]
     public async Task<ActionResult<ReminderDto>> UpdateAsync(Guid id, [FromBody] UpdateReminderDto dto)
     {
-        return Ok(await _reminderService.UpdateAsync(id, dto));
+        var userId = User.GetUserId();
+        return Ok(await _reminderService.UpdateAsync(id, userId, dto));
     }
 
     [HttpDelete("{id}")]
