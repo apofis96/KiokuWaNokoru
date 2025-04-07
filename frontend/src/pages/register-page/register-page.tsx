@@ -2,11 +2,10 @@ import { AbsoluteCenter, Button, Card } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { FormRef } from '@/common/interfaces/form-ref.interface';
 import { CreateUserForm } from '@/forms/user/create-user-form/create-user-form';
-import { useHeaderStore } from '@/stores/header.store';
+import { useHeader } from '@/common/hooks/hooks';
 
 const RegisterPage = () => {
-  const setNavigation = useHeaderStore(state => state.setNavigation);
-  setNavigation('Register');
+  useHeader('Register');
 
   const formRef = useRef<FormRef>(null);
 

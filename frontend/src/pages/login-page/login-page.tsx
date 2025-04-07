@@ -10,11 +10,10 @@ import { userApi } from '@/api/api';
 import { useUserStore } from '@/stores/user.store';
 import { useNavigate } from 'react-router';
 import { LoginUserRequest } from '@/common/types/types';
-import { useHeaderStore } from '@/stores/header.store';
+import { useHeader } from '@/common/hooks/hooks';
 
 const LoginPage = () => {
-  const setNavigation = useHeaderStore(state => state.setNavigation);
-  setNavigation('Login');
+  useHeader('Login');
 
   const formRef = useRef<FormRef>(null);
 

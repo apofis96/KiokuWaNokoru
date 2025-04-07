@@ -2,14 +2,13 @@ import { CreateReminderDrawer } from './components/create-reminder-drawer/create
 import { useDrawerStore } from '@/stores/drawer.store';
 import './dashboard-page.scss';
 import { RemindersTable } from './components/reminders-table/reminders-table';
-import { useHeaderStore } from '@/stores/header.store';
 import { forwardRef, useImperativeHandle } from 'react';
 import { PageRef } from '@/common/interfaces/page-ref.interface';
+import { useHeader } from '@/common/hooks/hooks';
 
 const DashboardPage = forwardRef<PageRef>((_, ref) => {
   const { toggleCreateReminderOpen } = useDrawerStore();
-  const setNavigation = useHeaderStore(state => state.setNavigation);
-  setNavigation('Dashboard', ['Create Reminder']);
+  useHeader('Dashboard', ['Create Reminder']);
   useImperativeHandle(ref, () => ({
     action(id: string) {
       if (id === 'Create Reminder') {
