@@ -28,6 +28,7 @@ const CreateReminderForm = forwardRef<FormRef, CreateReminderFormProps>(({ remin
       isRecurring: reminder?.isRecurring || false,
       recurrenceType: reminder?.recurrenceType || Recurrence.Cron,
       recurrenceValue: reminder?.recurrenceValue || '',
+      isOfNotificationTime: reminder?.isOfNotificationTime || false,
     },
   });
 
@@ -128,6 +129,26 @@ const CreateReminderForm = forwardRef<FormRef, CreateReminderFormProps>(({ remin
           <Fieldset.Content>
             <Field label='Recurrence Value'>
               <Controller control={control} name='recurrenceValue' render={({ field }) => <Input {...field} />} />
+            </Field>
+          </Fieldset.Content>
+
+          <Fieldset.Content>
+            <Field label='Is Of Notification Time'>
+              <Controller
+                control={control}
+                name='isOfNotificationTime'
+                render={({ field }) => (
+                  <Switch.Root
+                    name={field.name}
+                    checked={field.value}
+                    onCheckedChange={({ checked }) => field.onChange(checked)}
+                  >
+                    <Switch.HiddenInput onBlur={field.onBlur} />
+                    <Switch.Control />
+                    <Switch.Label>{field.value ? 'Yes' : 'No'}</Switch.Label>
+                  </Switch.Root>
+                )}
+              />
             </Field>
           </Fieldset.Content>
 

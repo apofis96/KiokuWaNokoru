@@ -56,9 +56,10 @@ const RemindersTable = () => {
       <Table.Cell>{item.id}</Table.Cell>
       <Table.Cell>{item.title}</Table.Cell>
       <Table.Cell>{item.description}</Table.Cell>
-      <Table.Cell>{item.isRecurring}</Table.Cell>
+      <Table.Cell>{item.isRecurring.toString()}</Table.Cell>
       <Table.Cell>{item.recurrenceType}</Table.Cell>
       <Table.Cell>{item.recurrenceValue}</Table.Cell>
+      <Table.Cell>{item.isOfNotificationTime.toString()}</Table.Cell>
       <Table.Cell>{item.nextFireAt.toDateString()}</Table.Cell>
       <Table.Cell>{item.createdAt.toDateString()}</Table.Cell>
       <ActionCell id={item.id} onDelete={handleDelete} onEdit={handleEdit} />
@@ -90,6 +91,7 @@ const RemindersTable = () => {
             <Table.ColumnHeader>Recurring</Table.ColumnHeader>
             <Table.ColumnHeader>Recurrence type</Table.ColumnHeader>
             <Table.ColumnHeader>Recurrence value</Table.ColumnHeader>
+            <Table.ColumnHeader>Is of notification time</Table.ColumnHeader>
             <Table.ColumnHeader>Next fire at</Table.ColumnHeader>
             <Table.ColumnHeader>Created at</Table.ColumnHeader>
             <Table.ColumnHeader />

@@ -9,6 +9,7 @@ type Reminder = BaseType & {
     recurrenceType: ValueOf<typeof Recurrence>;
     recurrenceValue: string;
     nextFireAt: Date;
+    isOfNotificationTime: boolean;
 }
 
 export type { Reminder };
