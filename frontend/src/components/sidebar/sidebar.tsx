@@ -1,5 +1,5 @@
 import { Box, Stack, IconButton } from '@chakra-ui/react';
-import { LuCalendarFold, LuBotMessageSquare } from 'react-icons/lu';
+import { LuCalendarFold, LuBotMessageSquare, LuSettings } from 'react-icons/lu';
 import { useLocation, useNavigate } from 'react-router';
 import { Page } from '@/common/enums/enums';
 import { LogoutButton } from './components/logout-button';
@@ -26,6 +26,13 @@ const Sidebar = () => {
           variant={getIconVariant(Page.Integrations)}
         >
           <LuBotMessageSquare />
+        </IconButton>
+        <IconButton
+          onClick={() => navigate(Page.Settings)}
+          aria-label='Settings'
+          variant={getIconVariant(Page.Settings)}
+        >
+          <LuSettings />
         </IconButton>
         <LogoutButton />
       </Stack>

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace KiokuWaNokoru.DAL.Context.EntityConfigurations
 {
-    public class UserUserSettingsConfig : BaseEntityConfig<UserSettings>
+    public class UserSettingsConfig : BaseEntityConfig<UserSettings>
     {
         public override void Configure(EntityTypeBuilder<UserSettings> builder)
         {

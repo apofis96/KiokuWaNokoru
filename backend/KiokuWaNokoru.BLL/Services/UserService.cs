@@ -21,6 +21,7 @@ namespace KiokuWaNokoru.BLL.Services
                 Email = userDto.Email.ToLowerInvariant(),
                 Password = hash,
                 Salt = salt,
+                UserSettings = new (),
             };
 
             context.Users.Add(user);

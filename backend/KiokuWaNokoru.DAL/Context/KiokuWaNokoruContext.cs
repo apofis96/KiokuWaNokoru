@@ -1,5 +1,4 @@
-﻿using KiokuWaNokoru.DAL.Context.EntityConfigurations;
-using KiokuWaNokoru.DAL.Entities;
+﻿using KiokuWaNokoru.DAL.Entities;
 using KiokuWaNokoru.DAL.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 
