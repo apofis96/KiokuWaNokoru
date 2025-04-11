@@ -12,3 +12,5 @@ export type { CreateBotIntegration } from './bot-integration/create-bot-integrat
 export type { BotIntegration } from './bot-integration/bot-integration.type'
 
 export type { TableType } from './base/table.type';
+
+export type { UserSettings } from './user-settings/user-settings.type';
