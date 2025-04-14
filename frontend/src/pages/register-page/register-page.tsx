@@ -3,9 +3,12 @@ import { useRef } from 'react';
 import { FormRef } from '@/common/interfaces/form-ref.interface';
 import { CreateUserForm } from '@/forms/user/create-user-form/create-user-form';
 import { useHeader } from '@/common/hooks/hooks';
+import { useNavigate } from 'react-router';
+import { Page } from '@/common/enums/enums';
 
 const RegisterPage = () => {
   useHeader('Register');
+  const navigate = useNavigate();
 
   const formRef = useRef<FormRef>(null);
 
@@ -20,9 +23,11 @@ const RegisterPage = () => {
           <CreateUserForm ref={formRef} />
         </Card.Body>
         <Card.Footer justifyContent='flex-end'>
-          <Button variant='outline'>Cancel</Button>
+          <Button variant='outline' onClick={() => navigate(Page.Login)}>
+            Cancel
+          </Button>
           <Button variant='solid' onClick={() => formRef.current?.submit()}>
-            Sign in
+            Sign up
           </Button>
         </Card.Footer>
       </Card.Root>

@@ -1,4 +1,4 @@
-import { CreateUser } from '@/common/types/types';
+import { CreateUser, LoginUserRequest } from '@/common/types/types';
 import { Field } from '@/components/ui/field';
 import { PasswordInput } from '@/components/ui/password-input';
 import { Fieldset, Input, Stack } from '@chakra-ui/react';
@@ -7,7 +7,10 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { FormRef } from '@/common/interfaces/form-ref.interface';
 import { usernameValidation, emailValidation, passwordValidation } from '@/common/validation-rules/validation-rules';
 import { useMutation } from '@tanstack/react-query';
+import { useUserStore } from '@/stores/user.store';
 import { userApi } from '@/api/api';
+import { useNavigate } from 'react-router';
+import { Page } from '@/common/enums/enums';
 
 const CreateUserForm = forwardRef<FormRef>((_, ref) => {
   const {
@@ -22,10 +25,25 @@ const CreateUserForm = forwardRef<FormRef>((_, ref) => {
     },
   });
 
-  const mutation = useMutation({
-    mutationFn: (newUser: CreateUser) => userApi.createUser(newUser),
+  const setUser = useUserStore(state => state.setUser);
+
+  const navigate = useNavigate();
+
+  const loginMutation = useMutation({
+    mutationFn: (loginUser: LoginUserRequest) => userApi.loginUser(loginUser),
     onSuccess: data => {
-      alert('User created ' + data.id);
+      setUser(data);
+      navigate(Page.Dashboard);
+    },
+  });
+
+  const registerMutation = useMutation({
+    mutationFn: (newUser: CreateUser) => userApi.createUser(newUser),
+    onSuccess: (_, variables) => {
+      loginMutation.mutate({
+        email: variables.email,
+        password: variables.password,
+      });
     },
   });
 
@@ -36,7 +54,7 @@ const CreateUserForm = forwardRef<FormRef>((_, ref) => {
   }));
 
   const onSubmit: SubmitHandler<CreateUser> = data => {
-    mutation.mutate(data);
+    registerMutation.mutate(data);
   };
 
   return (
